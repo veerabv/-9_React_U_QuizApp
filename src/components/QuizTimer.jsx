@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 const QuizTimer = ({ timeOut, onTimeout }) => {
   const [remainingTime, setRemainingTIme] = useState(timeOut);
   useEffect(() => {
-    const timer = setTimeout(onTimeout, timeOut);
+    console.log("timeout");
+     setTimeout(onTimeout, timeOut);
     // return () => {
         
     //      clearTimeout(timer)
@@ -11,6 +12,7 @@ const QuizTimer = ({ timeOut, onTimeout }) => {
   }, [timeOut, onTimeout]);
 
   useEffect(() => {
+    console.log("interval");
     setInterval(() => {
       setRemainingTIme((previousTime) => previousTime - 100);
     }, 100);

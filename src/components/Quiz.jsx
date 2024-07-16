@@ -9,11 +9,15 @@ export default function Quiz() {
   const activeQuestionIndex = userAnswers.length; // this is the derived state from the above state
   
   const quizIsCompleted = activeQuestionIndex === QUESTIONS.length;
-function handleSelectAnswer(answer) {
-  setUserAnswers((previousUserAnswer) => {
-    return [...previousUserAnswer, answer];
-  });
-}
+
+  const handleSelectAnswer = useCallback(function handleSelectAnswer(answer) {
+    setUserAnswers((previousUserAnswer) => {
+      return [...previousUserAnswer, answer];
+    });
+  },[])
+
+
+const handleSkipAnswer = useCallback(()=>handleSelectAnswer(null) , [handleSelectAnswer])
 
   if (quizIsCompleted) {
     return (
@@ -29,7 +33,8 @@ function handleSelectAnswer(answer) {
 
   return (
     <div id="quiz">
-      <QuizTimer timeOut={15000} onTimeout={()=>handleSelectAnswer(null)}/>
+
+      <QuizTimer timeOut={15000} onTimeout={handleSkipAnswer}/>
       <div id="question">
         <h2>{QUESTIONS[activeQuestionIndex].text}</h2>
         <ul id="answers">
