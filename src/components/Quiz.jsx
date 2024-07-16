@@ -4,16 +4,29 @@ import quizCompleteImg from "../assets/quiz-complete.png"
 import QuizTimer from "./QuizTimer";
 
 export default function Quiz() {
+  const [answerState , setAnswerState] = useState("")
   //   const [activeQuestionIndex, setActiveQuestion] = useState(0);  //comment this state because we can derived this state from below state
   const [userAnswers, setUserAnswers] = useState([]);
-  const activeQuestionIndex = userAnswers.length; // this is the derived state from the above state
+  const activeQuestionIndex = answerState === "" ? userAnswers.length : userAnswers.length-1; // this is the derived state from the above state
   
   const quizIsCompleted = activeQuestionIndex === QUESTIONS.length;
 
   const handleSelectAnswer = useCallback(function handleSelectAnswer(answer) {
+    setAnswerState("answered")
     setUserAnswers((previousUserAnswer) => {
       return [...previousUserAnswer, answer];
     });
+    setTimeout(()=>{
+      if(answer === QUESTIONS[activeQuestionIndex].answers[0]){
+        setAnswerState("correct")
+      }else {
+        setAnswerState("wrong")
+      }
+      setTimeout(()=>{
+        setAnswerState("")
+      },2000)
+      
+    },1000)
   },[])
 
 
@@ -38,13 +51,23 @@ const handleSkipAnswer = useCallback(()=>handleSelectAnswer(null) , [handleSelec
       <div id="question">
         <h2>{QUESTIONS[activeQuestionIndex].text}</h2>
         <ul id="answers">
-          {suffledAnswers.map((answer) => (
-            <li key={answer} className="answer">
-              <button onClick={() => handleSelectAnswer(answer)}>
-                {answer}
-              </button>
-            </li>
-          ))}
+          {suffledAnswers.map((answer) => {
+            const isSelected = userAnswers[userAnswers.length -1] === answer;
+            let cssClass = '';
+            if(answerState === "answered" && isSelected){
+              cssClass="selected"
+            }
+            if((answerState === "correct" || answerState === "wrong") && isSelected){
+              cssClass = answerState;
+            }
+           return <li key={answer} className="answer">
+            <button onClick={() => handleSelectAnswer(answer)} className={cssClass}>
+              {answer}
+            </button>
+          </li>
+          }
+            
+          )}
         </ul>
       </div>
     </div>
