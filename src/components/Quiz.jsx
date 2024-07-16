@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState ,useCallback} from "react";
 import QUESTIONS from "../questions";
 import quizCompleteImg from "../assets/quiz-complete.png"
+import QuizTimer from "./QuizTimer";
 
 export default function Quiz() {
   //   const [activeQuestionIndex, setActiveQuestion] = useState(0);  //comment this state because we can derived this state from below state
@@ -8,12 +9,12 @@ export default function Quiz() {
   const activeQuestionIndex = userAnswers.length; // this is the derived state from the above state
   
   const quizIsCompleted = activeQuestionIndex === QUESTIONS.length;
+function handleSelectAnswer(answer) {
+  setUserAnswers((previousUserAnswer) => {
+    return [...previousUserAnswer, answer];
+  });
+}
 
-  function handleSelectQuestion(answer) {
-    setUserAnswers((previousUserAnswer) => {
-      return [...previousUserAnswer, answer];
-    });
-  }
   if (quizIsCompleted) {
     return (
       <div id="summary">
@@ -28,12 +29,13 @@ export default function Quiz() {
 
   return (
     <div id="quiz">
+      <QuizTimer timeOut={15000} onTimeout={()=>handleSelectAnswer(null)}/>
       <div id="question">
         <h2>{QUESTIONS[activeQuestionIndex].text}</h2>
         <ul id="answers">
           {suffledAnswers.map((answer) => (
             <li key={answer} className="answer">
-              <button onClick={() => handleSelectQuestion(answer)}>
+              <button onClick={() => handleSelectAnswer(answer)}>
                 {answer}
               </button>
             </li>
