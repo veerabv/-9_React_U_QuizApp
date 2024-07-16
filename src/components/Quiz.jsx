@@ -34,7 +34,7 @@ const handleSkipAnswer = useCallback(()=>handleSelectAnswer(null) , [handleSelec
   return (
     <div id="quiz">
 
-      <QuizTimer timeOut={15000} onTimeout={handleSkipAnswer}/>
+      <QuizTimer key = {activeQuestionIndex} timeOut={15000} onTimeout={handleSkipAnswer}/>  {/*Key is not only used to render list the key prop is used to destroy the old element and create the new one */}
       <div id="question">
         <h2>{QUESTIONS[activeQuestionIndex].text}</h2>
         <ul id="answers">
