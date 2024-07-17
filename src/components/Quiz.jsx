@@ -7,8 +7,7 @@ export default function Quiz() {
  
   //   const [activeQuestionIndex, setActiveQuestion] = useState(0);  //comment this state because we can derived this state from below state
   const [userAnswers, setUserAnswers] = useState([]);
-  const activeQuestionIndex =
-   userAnswers.length ; // this is the derived state from the above state
+  const activeQuestionIndex =userAnswers.length ; // this is the derived state from the above state
 
   const quizIsCompleted = activeQuestionIndex === QUESTIONS.length;
 
