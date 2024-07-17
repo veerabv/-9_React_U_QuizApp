@@ -4,29 +4,20 @@ import quizCompleteImg from "../assets/quiz-complete.png";
 import Question from "./Question";
 
 export default function Quiz() {
-  const [answerState, setAnswerState] = useState("");
+ 
   //   const [activeQuestionIndex, setActiveQuestion] = useState(0);  //comment this state because we can derived this state from below state
   const [userAnswers, setUserAnswers] = useState([]);
   const activeQuestionIndex =
-    answerState === "" ? userAnswers.length : userAnswers.length - 1; // this is the derived state from the above state
+   userAnswers.length ; // this is the derived state from the above state
 
   const quizIsCompleted = activeQuestionIndex === QUESTIONS.length;
 
   const handleSelectAnswer = useCallback(function handleSelectAnswer(answer) {
-    setAnswerState("answered");
+    
     setUserAnswers((previousUserAnswer) => {
       return [...previousUserAnswer, answer];
     });
-    setTimeout(() => {
-      if (answer === QUESTIONS[activeQuestionIndex].answers[0]) {
-        setAnswerState("correct");
-      } else {
-        setAnswerState("wrong");
-      }
-      setTimeout(() => {
-        setAnswerState("");
-      }, 200);
-    }, 1000);
+   
   }, []);
 
   const handleSkipAnswer = useCallback(
@@ -47,10 +38,7 @@ export default function Quiz() {
     <div id="quiz">
       <Question
         key={activeQuestionIndex}
-        questionText={QUESTIONS[activeQuestionIndex].text}
-        answers={QUESTIONS[activeQuestionIndex].answers}
-        answerState={answerState}
-        selectedAnswer={userAnswers[userAnswers.length - 1]}
+        index={activeQuestionIndex}
         onSelectAnswer={handleSelectAnswer}
         onSkip={handleSkipAnswer}
       />
