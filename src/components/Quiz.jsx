@@ -27,7 +27,7 @@ export default function Quiz() {
       }
       setTimeout(() => {
         setAnswerState("");
-      }, 2000);
+      }, 200);
     }, 1000);
   }, []);
 
@@ -48,13 +48,14 @@ export default function Quiz() {
 
   return (
     <div id="quiz">
+   
+      {/*Key is not only used to render list the key prop is used to destroy the old element and create the new one */}
+      <div id="question">
       <QuizTimer
         key={activeQuestionIndex}
         timeOut={10000}
         onTimeout={handleSkipAnswer}
       />
-      {/*Key is not only used to render list the key prop is used to destroy the old element and create the new one */}
-      <div id="question">
         <h2>{QUESTIONS[activeQuestionIndex].text}</h2>
         <Answers
          key={activeQuestionIndex}
