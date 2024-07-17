@@ -1,8 +1,7 @@
 import { useState, useCallback } from "react";
 import QUESTIONS from "../questions";
 import quizCompleteImg from "../assets/quiz-complete.png";
-import QuizTimer from "./QuizTimer";
-import Answers from "./Answers";
+import Question from "./Question";
 
 export default function Quiz() {
   const [answerState, setAnswerState] = useState("");
@@ -13,8 +12,7 @@ export default function Quiz() {
 
   const quizIsCompleted = activeQuestionIndex === QUESTIONS.length;
 
-  const handleSelectAnswer = useCallback(
-    function handleSelectAnswer(answer) {
+  const handleSelectAnswer = useCallback(function handleSelectAnswer(answer) {
     setAnswerState("answered");
     setUserAnswers((previousUserAnswer) => {
       return [...previousUserAnswer, answer];
@@ -32,7 +30,6 @@ export default function Quiz() {
   }, []);
 
   const handleSkipAnswer = useCallback(
-
     () => handleSelectAnswer(null),
     [handleSelectAnswer]
   );
@@ -48,23 +45,16 @@ export default function Quiz() {
 
   return (
     <div id="quiz">
-   
-      {/*Key is not only used to render list the key prop is used to destroy the old element and create the new one */}
-      <div id="question">
-      <QuizTimer
+      <Question
         key={activeQuestionIndex}
-        timeOut={10000}
-        onTimeout={handleSkipAnswer}
+        questionText={QUESTIONS[activeQuestionIndex].text}
+        answers={QUESTIONS[activeQuestionIndex].answers}
+        answerState={answerState}
+        selectedAnswer={userAnswers[userAnswers.length - 1]}
+        onSelectAnswer={handleSelectAnswer}
+        onSkip={handleSkipAnswer}
       />
-        <h2>{QUESTIONS[activeQuestionIndex].text}</h2>
-        <Answers
-         key={activeQuestionIndex}
-          answers={QUESTIONS[activeQuestionIndex].answers}
-          selectedAnswer={userAnswers[userAnswers.length - 1]}
-          answerState = {answerState}
-          onSelect={handleSelectAnswer}
-        />
-      </div>
+      {/*Key is not only used to render list the key prop is used to destroy the old element and create the new one */}
     </div>
   );
 }
